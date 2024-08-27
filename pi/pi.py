@@ -44,7 +44,7 @@ def plot_estimations():
         plt.close(fig)
 
 
-def average_runs(N, n):
+def average_runs(N, n, display=False):
     avg_ret = 0.0
     for i in range(n):
         avg_ret += estimate_pi(N)
@@ -53,7 +53,22 @@ def average_runs(N, n):
 
     pe = abs((avg_ret - pi) / pi) * 100
 
-    print(f"N = {N} | avg approx over {n} runs = {avg_ret} | percent error of average = {pe}%")
+    if display:
+        print(f"N = {N} | avg approx over {n} runs = {avg_ret} | percent error of average = {pe}%")
+
+    return pe
 
 
-plot_estimatios()
+def plot_average():
+    c=[i for i in range(10,1000)]
+    pes=[]
+    for i in tqdm(range(len(c))):
+        pes.append(average_runs(c[i],100))
+    fig=plt.figure(figsize=(10,8))
+    plt.plot(c,pes)
+    plt.ylabel('Avg Percent error over 100 runs')
+    plt.xlabel('N')
+    plt.savefig(rf'C:\Users\jackm\PycharmProjects\PHYS416\pi\plots\pe.png')
+    plt.close(fig)
+
+plot_average()
